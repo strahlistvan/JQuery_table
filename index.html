@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+
+<html>
+	<head>
+		<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+		<meta charset="utf-8"> </meta>
+		<title> Table </title>
+		<script src="tablesorter.js"> </script>
+		<script>
+		$(function(){
+				$("#sortable").sortable();
+		//		$("#notsosorttable").sortable();
+			});
+		</script>
+	</head>
+	
+	<body>
+		<h1> Table </h1>
+		<table id="sortable" class="table" border="1">
+			<thead>
+				<tr>
+					<th> Integer number </th> 
+					<th> Real number </th>
+					<th> String value </th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr>
+					 <td>100 </td>
+					 <td> 0.12 </td>
+					 <td> Red </td>
+				</tr>
+				<tr>
+					 <td>500 </td>
+					 <td>23.11 </td>
+					 <td> Apple </td>
+				</tr>
+				<tr>
+					 <td> 20 </td>
+					 <td> 143.23 </td>
+					 <td> aba </td>
+				</tr>
+					<tr>
+					 <td> 2560 </td>
+					 <td> 19343.23 </td>
+					 <td> Green </td>
+				</tr>
+			</tbody>
+		</table>
+			
+		<table id="notsosorttable" class="table" border="1">
+			<thead>
+				<tr>
+					<th> Integer number </th> 
+					<th> Real number </th>
+					<th> String value </th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr>
+					 <td>100 </td>
+					 <td> 0.12 </td>
+					 <td> green </td>
+				</tr>
+				<tr>
+					 <td>500 </td>
+					 <td>23.11 </td>
+					 <td> green </td>
+				</tr>
+				<tr>
+					 <td> 20 </td>
+					 <td> 143.23 </td>
+					 <td> green </td>
+				</tr>
+			</tbody>
+		</table>
+		
+	</body>
+</html>
