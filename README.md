@@ -13,5 +13,5 @@ You can make sortable HTML tables easily with this plugin.
 JSON object. Default options: 
 `{showArrows: true, changeCursor: true, disabledRows: [] }`
 
-You can disable the `n`th column sorting if you add `n` to `options.disabledRows` array.
+You can disable the `nth` column sorting if you add `n` to `options.disabledRows` array.
 You can also disable sorting if you add `nosort` class to the HTML table given `th` element.
