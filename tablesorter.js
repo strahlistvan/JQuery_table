@@ -1,4 +1,10 @@
+/** Default option variables */
+var showArrows = true;
+var changeCursor = true;;
+var disabledColumns = [];
+
 (function($) {
+	
     /** Stringify parameter object, or parse it to number (if it's numeric)  */
     function goodFormat(value) {
         if (isNaN(value))
@@ -37,45 +43,71 @@
         } //end of function
 
     /** Sortable plugin function */
-    $.fn.sortable = function() {
+    $.fn.sortable = function(options) {
+		
+			/* Extend options */
+			var options = $.extend({showArrows: showArrows, 
+									changeCursor: changeCursor,
+									disabledColumns: disabledColumns }
+						 ,options);
+			/* Return each selected element */													
             return this.each(function() {
                 var tableMatrix = [];       // it will contain the selected HTML table values
                 var sortKey = 0;            // index of the column which is sorted
                 var activeTable = $(this); // store the active table element
                 var reverse = false;       // sort parameter: increasing (false) or decreasing (true)
-
+			
                 //Currently the table must contain thead and tbody children
-                if (!$(this).find("thead tr th") ||
-                    !$(this).find("tbody tr td")) {
-                    alert("Error! $(" + $(this).selector + ") element is not a valid  HTML table");
+                if (!activeTable.find("thead tr th") ||
+                    !activeTable.find("tbody tr td")) {
+                    alert("Error! $(" + activeTable.selector + ") element is not a valid  HTML table");
                     return;
                 }
 
                 $(this).find("thead tr th").each(function() {
+					var column = $(this);
                     var colIndex = $(this).index();
+                    
+                    //disable sorting columns with .nosort class
+                //    if (column.hasClass("nosort")){
+				//		options.disabledColumns.push(colIndex+1);
+				//	}
+                    
                     tableMatrix[colIndex] = [];
 
                     //Table styling...
-                    $(this).hover(function() {
-                        $(this).css("cursor", "pointer");
-                    });
+                    column.hover(function() {
+						if (options.changeCursor && options.disabledColumns.indexOf(sortKey+1) == -1) {
+							column.css("cursor", "pointer");
+						}
+                    });                    
+                });//end thead iterator
 
-                    
                     //click event on th element
-                    $(this).on("click", function(event) {
+                    activeTable.on("click", function(event) {
                         sortKey = $(event.target).index();
+                        
+                        //it the given column is not sortable
+                        if ($(event.target).hasClass("nosort"))
+							return;
+                        
+                        //it the given column is not sortable
+                        if (options.disabledColumns.indexOf(sortKey+1) != -1)
+							return;
+                        
                         tableMatrix = sortTableByKey(tableMatrix, sortKey, reverse);
                         reverse = !reverse;
                         
                         //arrows (optional)
-                        activeTable.find("thead tr th").each(function(){
-							var content = $(this).html();
-							content = content.replace(/(\uffea|\uffec)+/g,'');
-							$(this).html(content);
-						});
-                        var arrow = (reverse)? "&#65514;" : "&#65516;";
-                        $(this).html(arrow+$(this).html());
-
+                        if (options.showArrows) {
+							activeTable.find("thead tr th").each(function(){
+								var content = $(this).html();
+								content = content.replace(/(\uffea|\uffec)+/g,'');
+								$(this).html(content);
+							});
+							var arrow = (reverse)? "&#65514;" : "&#65516;";
+							$(event.target).html(arrow+$(event.target).html());
+						}
                         //Insert sorted data to HTML table
                         activeTable.find("tbody tr").each(function() {
                             var rowIndex = $(this).index();
@@ -88,8 +120,6 @@
                             });
                         });
                     }); //end onclick event
-                    
-                });//end thead iterator
 
                 //Put data from HTML table to tableMatrix variable
                 $(this).find("tbody tr td").each(function() {
